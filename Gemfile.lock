@@ -60,8 +60,12 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    acts_as_paranoid (0.7.3)
+      activerecord (>= 5.2, < 7.0)
+      activesupport (>= 5.2, < 7.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.15.0)
       msgpack (~> 1.2)
@@ -87,6 +91,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jwt (2.5.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -175,6 +180,7 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    simple_command (1.0.1)
     spring (4.1.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -217,10 +223,13 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts_as_paranoid (~> 0.7.3)
+  bcrypt (~> 3.1.7)
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
   jbuilder (~> 2.7)
+  jwt
   listen (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)
@@ -228,6 +237,7 @@ DEPENDENCIES
   rails (~> 6.1.7)
   sass-rails (>= 6)
   selenium-webdriver (>= 4.0.0.rc1)
+  simple_command
   spring
   turbolinks (~> 5)
   tzinfo-data
