@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   skip_before_action :authenticate_cookie, only: [:create]
+  before_action :find_user, only: [:show]
 
   def create
     @user = User.new(user_params)
@@ -11,9 +12,17 @@ class UserController < ApplicationController
     end
   end
 
+  def show
+    render json: @user, status: 200
+  end
+
   private
 
+  def find_user
+    @user = User.find_by(id: params[:id])
+  end
+
   def user_params
-    params.require(:user).permit(:name, :email, :password)
+    params.permit(:name, :email, :password)
   end
 end

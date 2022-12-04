@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
-  resources :user, only: [:create]
+
+  resources :topics
+  resources :user
+  resources :subject
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
