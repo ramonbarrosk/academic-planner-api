@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root :to => 'index#index'
+  root :to => 'main#index'
   resources :sessions, only: [:create, :destroy]
 
   resources :topics
