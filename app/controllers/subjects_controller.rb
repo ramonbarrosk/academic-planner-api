@@ -1,4 +1,4 @@
-class SubjectController < ApplicationController
+class SubjectsController < ApplicationController
   before_action :find_subject, only: %i[ show edit update destroy ]
 
   def create
@@ -20,15 +20,33 @@ class SubjectController < ApplicationController
   end
 
   def destroy
-    @subject.destroy
+    if @subject
+      @subject.destroy
+      render json: @subject, status: 200
+    else 
+      render json: { errors: 'Subject not exists' }, status: 503
+    end
   end
 
   def show
-    render json: @subject, status: 200
+    if @subject
+      render json: @subject, status: 200
+    else 
+      render json: { errors: 'Subject not exists' }, status: 503
+    end
   end
 
   def update 
-    @subject.update(api_params)
+    if @subject.nil?
+      render json: { errors: "Subject not exists" }, status: 503
+      return []
+    end
+
+    if @subject.update(api_params)
+      render json: @subject, status: 200
+    else  
+      render json: { errors: @subject.errors.full_messages }, status: 503
+    end
   end
 
   private

@@ -2,11 +2,15 @@ class TopicsController < ApplicationController
   before_action :set_topic, only: %i[ show edit update destroy ]
 
   def index
-    render json: Topic.where(user_id: current_user.id).all, status: 201
+    render json: Topic.where(user_id: current_user.id).all, status: 200
   end
 
   def show
-    render json: @topic, status: 200
+    if @topic
+      render json: @topic, status: 200
+    else 
+      render json: { errors: 'Topic not exists' }, status: 503
+    end
   end
 
   def new
@@ -17,32 +21,41 @@ class TopicsController < ApplicationController
   end
 
   def create
-    @topic = Topic.new
-
-    @topic.name = topic_params[:name]
-    @topic.study_hours = topic_params[:study_hours]
-    @topic.user_id = topic_params[:user_id]
-    @topic.subject_id = topic_params[:subject_id]
+    @topic = Topic.new(topic_params)
 
     if @topic.save
       render json: @topic, status: 201
     else
-      render json: { errors: @subject.errors.full_messages }, status: 503
+      render json: { errors: @topic.errors.full_messages }, status: 503
     end
   end
 
-  def update
-    @topic.update(topic_params)
+  def update 
+    if @topic.nil?
+      render json: { errors: "Topic not exists" }, status: 503
+      return []
+    end
+
+    if @topic.update(topic_params)
+      render json: @topic, status: 200
+    else  
+      render json: { errors: @topic.errors.full_messages }, status: 503
+    end
   end
 
   def destroy
-    @topic.destroy
+    if @topic
+      @topic.destroy
+      render json: @topic, status: 200
+    else 
+      render json: { errors: 'Topic not exists' }, status: 503
+    end
   end
 
   private
 
   def set_topic
-    @topic = Topic.find(params[:id])
+    @topic = Topic.find_by(id: params[:id])
   end
 
   def topic_params

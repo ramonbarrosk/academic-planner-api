@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2022_12_03_233103) do
   create_table "notification_topics", force: :cascade do |t|
     t.bigint "notification_id"
     t.bigint "topic_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["notification_id"], name: "index_notification_topics_on_notification_id"
@@ -26,8 +27,9 @@ ActiveRecord::Schema.define(version: 2022_12_03_233103) do
 
   create_table "notifications", force: :cascade do |t|
     t.datetime "date"
-    t.boolean "status"
+    t.boolean "status", default: false
     t.bigint "user_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_notifications_on_user_id"
@@ -47,6 +49,7 @@ ActiveRecord::Schema.define(version: 2022_12_03_233103) do
     t.string "shift"
     t.datetime "start_date"
     t.datetime "end_date"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -54,9 +57,10 @@ ActiveRecord::Schema.define(version: 2022_12_03_233103) do
   create_table "topics", force: :cascade do |t|
     t.string "name"
     t.integer "study_hours"
-    t.boolean "status"
+    t.boolean "status", default: false
     t.bigint "user_id"
     t.bigint "subject_id"
+    t.datetime "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["subject_id"], name: "index_topics_on_subject_id"

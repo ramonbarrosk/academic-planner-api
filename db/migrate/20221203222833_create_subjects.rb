@@ -5,6 +5,7 @@ class CreateSubjects < ActiveRecord::Migration[6.1]
       t.string :shift
       t.datetime :start_date
       t.datetime :end_date
+      t.datetime :deleted_at
 
       t.timestamps
     end
