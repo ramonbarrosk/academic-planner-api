@@ -1,4 +1,4 @@
-class UserController < ApplicationController
+class UsersController < ApplicationController
   skip_before_action :authenticate_cookie, only: [:create]
   before_action :find_user, only: [:show]
 
