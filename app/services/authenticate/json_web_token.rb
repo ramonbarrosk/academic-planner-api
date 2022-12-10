@@ -7,8 +7,6 @@ class Authenticate::JsonWebToken
 
     def decode(token)
       JWT.decode(token, ENV['SECRET_KEY_BASE'] || Rails.application.secrets.secret_key_base, false, { algorithm: 'HS512' })[0]
-    rescue
-      nil
     end
   end
 end
