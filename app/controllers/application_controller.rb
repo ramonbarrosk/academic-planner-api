@@ -12,9 +12,11 @@ class ApplicationController < ActionController::API
 
   def authenticate_cookie
     token = Rails.env.development? ? cookies.signed[:"next-auth.session-token"] : get_cookie_prod
-
+    p "TOKEN"
+    p token
     decoded_token = Authenticate::JsonWebToken.decode(token)
-
+    p "DECODE"
+    p decoded_token
     if decoded_token && decoded_token["sub"]
       @current_user = User.find_by_id(decoded_token["sub"])
     end
