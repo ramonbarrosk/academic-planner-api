@@ -24,7 +24,7 @@ class Authenticate::User
   def query_user
     user = User.find_by_email(@email) 
 
-    return errors.add(:user_authentication, 'invalid credentials', { email: @email }) unless user
+    return errors.add(:user_authentication, 'invalid credentials', { email: @email }) unless user && user.authenticate(@password)
 
     user
   end
