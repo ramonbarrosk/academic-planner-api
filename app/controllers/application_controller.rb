@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   private
 
   def authenticate_cookie
-    token = Rails.env.development? ? cookies.signed[:"next-auth.session-token"] : get_cookie_prod
+    token = cookies.signed[:"next-auth.session-token"] 
     p "TOKEN"
     p token
     decoded_token = Authenticate::JsonWebToken.decode(token)
