@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  skip_before_action :authenticate_cookie, only: [:create]
+  skip_before_action :authenticate_request, only: [:create]
 
   def create
     email = api_params[:email]
@@ -18,11 +18,6 @@ class SessionsController < ApplicationController
     else
       render json: { status: 'specify email address and password' }, status: 403
     end
-  end
-
-  def destroy
-    cookies.delete("next-auth.session-token") if current_user
-    render json: {}, status: :no_content
   end
 
   private

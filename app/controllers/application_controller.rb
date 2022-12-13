@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::API
-  include ::ActionController::Cookies
   attr_reader :current_user
 
-  before_action :authenticate_cookie
+  before_action :authenticate_request
 
   # def current_ability
   #   UserAbility.new(@current_user) if @current_user
@@ -10,19 +9,8 @@ class ApplicationController < ActionController::API
 
   private
 
-  def authenticate_cookie
-    token = cookies.signed[:"next-auth.session-token"] 
-
-    decoded_token = Authenticate::JsonWebToken.decode(token)
-
-    if decoded_token && decoded_token["sub"]
-      @current_user = User.find_by_id(decoded_token["sub"])
-    end
-
-    if @current_user then return true else render json: { status: 'unauthorized', code: 401 }, status: :unauthorized end
-  end
-
-  def get_cookie_prod
-    cookies[:"next-auth.session-token"] || cookies[:"__Secure-next-auth.session-token"]
+  def authenticate_request
+    @current_user = ::AuthorizeApiRequest.call(request.headers).result
+    render json: { error: 'Not Authorized' }, status: 401 unless @current_user
   end
 end

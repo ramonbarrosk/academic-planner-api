@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_cookie, only: [:create]
+  skip_before_action :authenticate_request, only: [:create]
   before_action :find_user, only: [:show]
 
   def create
