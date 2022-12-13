@@ -10,17 +10,8 @@ class SessionsController < ApplicationController
 
       if service_auth.success?
         login_hash = service_auth.result
-
-        cookies.signed["next-auth.session-token"] = {
-          value: login_hash[:accessToken],
-          httponly: true
-        }
-
-        render json: { 
-          id: login_hash[:id],
-          name: login_hash[:name],
-          email: login_hash[:email]
-        }
+        
+        render json: { auth_token: login_hash[:accessToken] }
       else
         render json: { status: 'incorrect email or password' }, status: 403
       end
