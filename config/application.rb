@@ -19,5 +19,21 @@ module AcademicPlannerApi
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # Rails.application.config.middleware.insert_before 0, Rack::Cors do
+    #   allow do
+    #     origins '*'
+    #     resource '*', headers: :any, methods: [:get, :post, :patch, :put]
+    #   end
+    # end
+
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+                 headers: :any,
+                 expose: %w(access-token expiry token-type uid client),
+                 methods: %i(post get patch put)
+      end
+    end
   end
 end

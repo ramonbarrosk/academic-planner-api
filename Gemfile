@@ -30,6 +30,8 @@ gem 'jwt'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'rack-cors'
+
 gem 'simple_command'
 
 gem 'acts_as_paranoid', '~> 0.7.3'
