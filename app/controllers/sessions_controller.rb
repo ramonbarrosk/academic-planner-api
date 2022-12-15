@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       if service_auth.success?
         login_hash = service_auth.result
         
-        render json: { auth_token: login_hash[:accessToken] }
+        render json: { id: login_hash[:id], auth_token: login_hash[:accessToken] }
       else
         render json: { status: 'incorrect email or password' }, status: 403
       end
