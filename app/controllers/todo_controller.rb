@@ -38,12 +38,12 @@ class TodoController < ApplicationController
         subjects.name,
         jsonb_agg(jsonb_build_object(
           'id', t.id, 'name', t.name
-              )) AS topics
+              )) filter (where t.id is not null) AS topics
       FROM
         subjects
       LEFT JOIN subject_users su ON
         su.subject_id = subjects.id
-      INNER JOIN topics t ON
+      LEFT JOIN topics t ON
         t.subject_id = subjects.id
       WHERE su.user_id = '#{current_user.id}'
       AND subjects.id = '#{set_subject.id}'
