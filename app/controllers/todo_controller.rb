@@ -55,7 +55,8 @@ class TodoController < ApplicationController
     query = ActiveRecord::Base.connection.exec_query(query)
 
     query.map do |subject|
-      subject['topics'] = JSON.parse(subject['topics'])
+      subject['topics'] = JSON.parse(subject['topics']) unless subject['topics'].blank?
+      subject['topics'] = [] if subject['topics'].blank?
     end
     
     render json: query.last, status: 200
