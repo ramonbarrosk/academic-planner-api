@@ -32,7 +32,7 @@ module AcademicPlannerApi
         resource '*',
                  headers: :any,
                  expose: %w(access-token expiry token-type uid client),
-                 methods: %i(post get patch put)
+                 methods: %i(post get patch put delete)
       end
     end
   end
