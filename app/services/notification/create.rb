@@ -6,21 +6,23 @@ class Notification::Create
   end
 
   def call
-    notification = Notification.where(created_at: Date.today.all_day).last
-    notification = notification ? notification : Notification.new
+    revisions = [1, 7, 30]
 
-    notification.user_id = @topic.user_id
+    revisions.each do |revision|
+      notification = Notification.new
 
-    notification.date = Time.now - 3.hours
+      notification.user_id = @topic.user_id
 
-    notification.save 
+      notification.date = Date.today + revision.days()
 
-    notification_topic = NotificationTopic.new
+      notification.save
 
-    notification_topic.notification_id = notification.id 
-    notification_topic.topic_id = @topic.id
+      notification_topic = NotificationTopic.new
 
-    notification_topic.save
+      notification_topic.notification_id = notification.id 
+      notification_topic.topic_id = @topic.id
+  
+      notification_topic.save
+    end
   end
-
 end

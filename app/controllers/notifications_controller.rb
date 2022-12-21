@@ -4,9 +4,12 @@ class NotificationsController < ApplicationController
   def index
     query = "
       SELECT
+      DISTINCT ON (notifications.id)
         notifications.id,
         notifications.date,
-        jsonb_agg(topics.name) AS topics
+        notifications.status,
+        topics.name AS topic_name,
+        topics.id AS topic_id
       FROM
         notifications
       LEFT JOIN notification_topics nt
@@ -14,16 +17,10 @@ class NotificationsController < ApplicationController
       LEFT JOIN topics
         ON topics.id = nt.topic_id 
       WHERE notifications.user_id = '#{current_user.id}'
-      GROUP BY 
-        notifications.id,
-        notifications.date 
     "
 
     results = ActiveRecord::Base.connection.exec_query(query)
 
-    results.map do |notification|
-      notification[:topics] = notification['topics'].gsub("[", "").gsub("]", "").gsub("\"", "").split(",")
-    end
     render json: results, status: 200
   end
 
@@ -40,9 +37,8 @@ class NotificationsController < ApplicationController
       render json: { errors: "Notification not exists" }, status: 503
       return []
     end
-    #DEFAULT ASSIM QUE ATUALIZA NOTIFICAÇÃO, ACRESCENTA MAIS 10 DIAS PARA REVISAR
 
-    if @notification.update(date: @notification.date + 10.days)
+    if @notification.update(status: true)
       render json: @notification, status: 200
     else  
       render json: { errors: @notification.errors.full_messages }, status: 503
