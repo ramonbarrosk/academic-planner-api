@@ -8,7 +8,7 @@ class TodoController < ApplicationController
         subjects.name,
         jsonb_agg(jsonb_build_object(
           'id', t.id, 'name', t.name
-              )) AS topics
+              )) filter (where t.id is not null AND t.deleted_at IS NULL) AS topics
       FROM
         subjects
       LEFT JOIN subject_users su ON
@@ -24,7 +24,8 @@ class TodoController < ApplicationController
     query = ActiveRecord::Base.connection.exec_query(query)
 
     query.map do |subject|
-      subject['topics'] = JSON.parse(subject['topics'])
+      subject['topics'] = JSON.parse(subject['topics']) unless subject['topics'].blank?
+      subject['topics'] = [] if subject['topics'].blank?
     end
     
     render json: query, status: 200
@@ -38,7 +39,7 @@ class TodoController < ApplicationController
         subjects.name,
         jsonb_agg(jsonb_build_object(
           'id', t.id, 'name', t.name
-              )) filter (where t.id is not null) AS topics
+              )) filter (where t.id is not null AND t.deleted_at IS NULL) AS topics
       FROM
         subjects
       LEFT JOIN subject_users su ON

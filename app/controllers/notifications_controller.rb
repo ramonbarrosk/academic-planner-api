@@ -16,7 +16,8 @@ class NotificationsController < ApplicationController
         on nt.notification_id = notifications.id
       LEFT JOIN topics
         ON topics.id = nt.topic_id 
-      WHERE notifications.user_id = '#{current_user.id}'
+      WHERE notifications.user_id = '#{current_user.id}' 
+        AND topics.deleted_at IS NULL
     "
 
     results = ActiveRecord::Base.connection.exec_query(query)
