@@ -18,6 +18,7 @@ class NotificationsController < ApplicationController
         ON topics.id = nt.topic_id 
       WHERE notifications.user_id = '#{current_user.id}' 
         AND topics.deleted_at IS NULL
+        AND topics.name IS NOT NULL
     "
 
     results = ActiveRecord::Base.connection.exec_query(query)
